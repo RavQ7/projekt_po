@@ -41,9 +41,12 @@ class Las {
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
                 double losowa = random.nextDouble();
-                if (losowa < 0.7) {
-                    pola[i][j] = new Sosna(); // 70% szans na sosnę
-                } else if (losowa < 0.85) {
+                if (losowa < 0.35) {
+                    pola[i][j] = new Sosna(); // 35% szans na sosnę
+                } else if (losowa < 0.7) {
+                    pola[i][j] = new Dab(); // 35% szans na puste pole
+                }
+                else if (losowa < 0.85) {
                     pola[i][j] = new Puste(); // 15% szans na puste pole
                 } else {
                     pola[i][j] = new Woda();   // 15% szans na wodę
