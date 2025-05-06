@@ -69,11 +69,13 @@ public class Las {
         if (element instanceof Sosna) {
             Sosna kopia = new Sosna();
             kopia.setStan(((Sosna) element).getStan());
+            kopia.setAktualnyCzasPalenia(((Sosna) element).getAktualnyCzasPalenia());
             kopia.symbol = element.symbol;
             return kopia;
         } else if (element instanceof Dab) {
             Dab kopia = new Dab();
             kopia.setStan(((Dab) element).getStan());
+            kopia.setAktualnyCzasPalenia(((Dab) element).getAktualnyCzasPalenia());
             kopia.symbol = element.symbol;
             return kopia;
         } else if (element instanceof Trawa) {

@@ -18,6 +18,8 @@ public abstract class Drzewo extends ElementTerenu {
 
     public StanDrzewa getStan() { return stan; }
     public void setStan(StanDrzewa stan) { this.stan = stan; }
+    public int getAktualnyCzasPalenia() { return aktualnyCzasPalenia; }
+    public void setAktualnyCzasPalenia(int AktualnyCzasPalenia) {this.aktualnyCzasPalenia = AktualnyCzasPalenia;}
 
     @Override
     public boolean isPalny() { return true; }
@@ -30,6 +32,7 @@ public abstract class Drzewo extends ElementTerenu {
     @Override
     public void nextStep(Las las, int row, int col) {
         if (stan == StanDrzewa.PLONACE) {
+            symbol = '!';
             aktualnyCzasPalenia++;
             if (aktualnyCzasPalenia >= czasPalenia) {
                 stan = StanDrzewa.SPALONE;
