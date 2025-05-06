@@ -11,11 +11,13 @@ public class Las {
     private final Wiatr wiatr = new Wiatr();
     private FileWriter csvWriter;
     private Random rand = new Random();
+    private int epoka;
 
     public Las(int wysokosc, int szerokosc) {
         this.wysokosc = wysokosc;
         this.szerokosc = szerokosc;
         this.pola = new ElementTerenu[wysokosc][szerokosc];
+        this.epoka = 0;
 
         try {
             csvWriter = new FileWriter("symulacja.csv");
@@ -60,6 +62,7 @@ public class Las {
             }
         }
         pola = nowaPlansza;
+        epoka++;
     }
 
     private ElementTerenu kopiujElement(ElementTerenu element) {
@@ -93,7 +96,7 @@ public class Las {
         }
     }
 
-    private List<Integer> zliczStany() {
+    public List<Integer> zliczStany() {
         int zdrowe = 0, plonace = 0, spalone = 0;
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
@@ -127,12 +130,12 @@ public class Las {
                 (stany.get(2) * 100.0) / wszystkieDrzewa : 0;
     }
 
-    // Gettery i settery
     public Wiatr getWiatr() { return wiatr; }
     public int getWysokosc() { return wysokosc; }
     public int getSzerokosc() { return szerokosc; }
     public ElementTerenu getPole(int row, int col) { return pola[row][col]; }
     public void setPole(int row, int col, ElementTerenu element) { pola[row][col] = element; }
+    public int getEpoka() { return epoka; }
 
     public void wyswietlLas() {
         for (int i = 0; i < wysokosc; i++) {

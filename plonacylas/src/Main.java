@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javax.swing.SwingUtilities;
+
 public class Main {
     public static void main(String[] args) {
-        Las las = new Las(5, 5);
-        las.wyswietlLas();
+        SwingUtilities.invokeLater(() -> {
+            Las las = new Las(20, 20);
+            new LasFrame(las);
+        });
     }
 }
