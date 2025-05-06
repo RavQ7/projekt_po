@@ -2,17 +2,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-class Las {
+public class Las {
     private ElementTerenu[][] pola;
     private int wysokosc;
     private int szerokosc;
+    private final Wiatr wiatr = new Wiatr();
 
     public Las(int wysokosc, int szerokosc) {
         this.wysokosc = wysokosc;
         this.szerokosc = szerokosc;
         this.pola = new ElementTerenu[wysokosc][szerokosc];
-        // Inicjalizacja planszy (np. losowe rozmieszczenie elementów)
         inicjalizujLas();
+    }
+
+    public Wiatr getWiatr() {
+        return wiatr;
     }
 
     public int getWysokosc() {
@@ -42,25 +46,23 @@ class Las {
             for (int j = 0; j < szerokosc; j++) {
                 double losowa = random.nextDouble();
                 if (losowa < 0.35) {
-                    pola[i][j] = new Sosna(); // 35% szans na sosnę
+                    pola[i][j] = new Sosna();
                 } else if (losowa < 0.7) {
-                    pola[i][j] = new Dab(); // 35% szans na puste pole
-                }
-                else if (losowa < 0.85) {
-                    pola[i][j] = new Puste(); // 15% szans na puste pole
+                    pola[i][j] = new Dab();
+                } else if (losowa < 0.85) {
+                    pola[i][j] = new Puste();
                 } else {
-                    pola[i][j] = new Woda();   // 15% szans na wodę
+                    pola[i][j] = new Woda();
                 }
             }
         }
-        // Dodanie początkowego ognia (przykładowo w losowym miejscu)
+
         int startRow = random.nextInt(wysokosc);
         int startCol = random.nextInt(szerokosc);
         if (pola[startRow][startCol] instanceof Drzewo) {
             ((Drzewo) pola[startRow][startCol]).setStan(Drzewo.StanDrzewa.PLONACE);
             pola[startRow][startCol].symbol = '*';
         } else {
-            // Jeśli wylosowano wodę lub puste, można spróbować innego miejsca
             for (int i = 0; i < wysokosc; i++) {
                 for (int j = 0; j < szerokosc; j++) {
                     if (pola[i][j] instanceof Drzewo) {
@@ -88,7 +90,6 @@ class Las {
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
                 if (pola[i][j] != null) {
-                    // Tworzymy nowy obiekt, aby uniknąć modyfikacji w trakcie iteracji
                     if (pola[i][j] instanceof Drzewo) {
                         Drzewo stareDrzewo = (Drzewo) pola[i][j];
                         Drzewo noweDrzewo = null;
@@ -103,8 +104,6 @@ class Las {
                             noweDrzewo.symbol = stareDrzewo.symbol;
                             noweDrzewo.nextStep(this, i, j);
                             nastepnePola[i][j] = noweDrzewo;
-                        } else {
-                            nastepnePola[i][j] = pola[i][j]; // Jeśli nie Drzewo, to bez zmian
                         }
                     } else if (pola[i][j] instanceof Ogien) {
                         Ogien staryOgien = (Ogien) pola[i][j];
@@ -137,7 +136,7 @@ class Las {
                         spalone++;
                     }
                 } else if (pola[i][j] instanceof Ogien) {
-                    plonace++; // Traktujemy ogień jako płonące
+                    plonace++;
                 }
             }
         }
@@ -175,6 +174,6 @@ class Las {
                 }
             }
         }
-        return 0;
+        return (wszystkieDrzewa > 0) ? (spalone * 100.0) / wszystkieDrzewa : 0;
     }
 }

@@ -1,33 +1,28 @@
-class Wiatr {
-    public enum KierunekWiatru {
-        POLNOC,
-        POLUDNIE,
-        WSCHOD,
-        ZACHOD
+public class Wiatr {
+    private int kierunekDr;
+    private int kierunekDc;
+    private int siła;
+
+    public Wiatr() {
+        this.kierunekDr = 0;
+        this.kierunekDc = 0;
+        this.siła = 0;
     }
 
-    private KierunekWiatru kierunek;
-    private double sila;
-
-    public Wiatr(KierunekWiatru kierunek, double sila) {
-        this.kierunek = kierunek;
-        this.sila = sila;
+    public void ustawKierunek(int dr, int dc) {
+        this.kierunekDr = dr;
+        this.kierunekDc = dc;
     }
 
-    public KierunekWiatru getKierunek() {
-        return kierunek;
+    public void ustawSiłę(int siła) {
+        this.siła = Math.max(0, Math.min(siła, 5));
     }
 
-    public double getSila() {
-        return sila;
+    public int[] getWektor() {
+        return new int[]{kierunekDr, kierunekDc};
     }
 
-    // Metody do modyfikacji kierunku i siły wiatru
-    public void zmienKierunek(KierunekWiatru nowyKierunek) {
-        this.kierunek = nowyKierunek;
-    }
-
-    public void zmienSila(double nowaSila) {
-        this.sila = nowaSila;
+    public int getSiła() {
+        return siła;
     }
 }

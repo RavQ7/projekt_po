@@ -47,7 +47,6 @@ abstract class Drzewo extends ElementTerenu {
                 stan = StanDrzewa.SPALONE;
                 symbol = '#';
             }
-            // Rozprzestrzenianie ognia do sąsiadów
             rozprzestrzenOgien(las, row, col);
         }
     }
@@ -60,6 +59,10 @@ abstract class Drzewo extends ElementTerenu {
         int[] dr = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dc = {-1, 0, 1, -1, 1, -1, 0, 1};
 
+        Wiatr wiatr = las.getWiatr();
+        int[] wiatrVector = wiatr.getWektor();
+        int wiatrSila = wiatr.getSiła();
+
         for (int i = 0; i < 8; i++) {
             int newRow = row + dr[i];
             int newCol = col + dc[i];
@@ -67,15 +70,20 @@ abstract class Drzewo extends ElementTerenu {
             if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
                 ElementTerenu sasiad = las.getPole(newRow, newCol);
                 if (sasiad != null && sasiad.canBeIgnited()) {
-                    // Prawdopodobieństwo zapłonu (może zależeć od typu drzewa, wiatru itp.)
-                    double prawdopodobienstwoZaplonu = 0.3;
-                    if (random.nextDouble() < prawdopodobienstwoZaplonu) {
+                    double prawdopodobienstwo = 0.3;
+
+                    if (wiatrSila > 0) {
+                        int dx = dc[i];
+                        int dy = dr[i];
+                        double zgodnosc = (dx * wiatrVector[1] + dy * wiatrVector[0]) / 2.0;
+                        prawdopodobienstwo += zgodnosc * 0.15 * wiatrSila;
+                        prawdopodobienstwo = Math.max(0, Math.min(1, prawdopodobienstwo));
+                    }
+
+                    if (random.nextDouble() < prawdopodobienstwo) {
                         if (sasiad instanceof Drzewo) {
                             ((Drzewo) sasiad).setStan(StanDrzewa.PLONACE);
                             sasiad.symbol = '*';
-                        } else if (sasiad instanceof Puste) {
-                            // Ogień może przejść przez puste pole, ale niekoniecznie je "pali" na stałe
-                            // Można dodać logikę, np. tymczasowy stan płonący dla pustego pola
                         }
                     }
                 }
