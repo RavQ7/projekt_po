@@ -58,9 +58,9 @@ public abstract class Drzewo extends ElementTerenu {
                 if (sasiad != null && sasiad.canBeIgnited()) {
                     double prawdopodobienstwo = this.palnosc;
 
-                    // Oblicz wpływ wiatru
+                    // Wpływ wiatru
                     if (wiatrSila > 0) {
-                        double zgodnosc = (dc[i]*wiatrVector[1] + dr[i]*wiatrVector[0]) / 2.0;
+                        double zgodnosc = (dc[i] * wiatrVector[1] + dr[i] * wiatrVector[0]) / 2.0;
                         prawdopodobienstwo += zgodnosc * 0.15 * wiatrSila;
                         prawdopodobienstwo = Math.max(0, Math.min(1, prawdopodobienstwo));
                     }

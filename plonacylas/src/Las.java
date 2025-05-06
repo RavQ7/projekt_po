@@ -1,7 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Las {
@@ -38,11 +38,11 @@ public class Las {
             }
         }
 
-        // Dodaj ogień startowy
+        // Początkowy ogień
         int startRow = rand.nextInt(wysokosc);
         int startCol = rand.nextInt(szerokosc);
         if (pola[startRow][startCol] instanceof Drzewo) {
-            ((Drzewo)pola[startRow][startCol]).setStan(Drzewo.StanDrzewa.PLONACE);
+            ((Drzewo) pola[startRow][startCol]).setStan(Drzewo.StanDrzewa.PLONACE);
             pola[startRow][startCol].symbol = '*';
         }
     }
@@ -63,18 +63,34 @@ public class Las {
     }
 
     private ElementTerenu kopiujElement(ElementTerenu element) {
-        if (element instanceof Sosna) return new Sosna();
-        if (element instanceof Dab) return new Dab();
-        if (element instanceof Trawa) return new Trawa();
-        if (element instanceof Woda) return new Woda();
-        return new Puste();
+        if (element instanceof Sosna) {
+            Sosna kopia = new Sosna();
+            kopia.setStan(((Sosna) element).getStan());
+            kopia.symbol = element.symbol;
+            return kopia;
+        } else if (element instanceof Dab) {
+            Dab kopia = new Dab();
+            kopia.setStan(((Dab) element).getStan());
+            kopia.symbol = element.symbol;
+            return kopia;
+        } else if (element instanceof Trawa) {
+            return new Trawa();
+        } else if (element instanceof Woda) {
+            return new Woda();
+        } else {
+            return new Puste();
+        }
     }
 
-    public void zapiszStanDoCSV(int epoka) throws IOException {
-        List<Integer> stany = zliczStany();
-        csvWriter.append(String.format("%d,%d,%d,%d\n",
-                epoka, stany.get(0), stany.get(1), stany.get(2)));
-        csvWriter.flush();
+    public void zapiszStanDoCSV(int epoka) {
+        try {
+            List<Integer> stany = zliczStany();
+            csvWriter.append(String.format("%d,%d,%d,%d\n",
+                    epoka, stany.get(0), stany.get(1), stany.get(2)));
+            csvWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<Integer> zliczStany() {
@@ -82,7 +98,7 @@ public class Las {
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
                 if (pola[i][j] instanceof Drzewo) {
-                    Drzewo.StanDrzewa stan = ((Drzewo)pola[i][j]).getStan();
+                    Drzewo.StanDrzewa stan = ((Drzewo) pola[i][j]).getStan();
                     if (stan == Drzewo.StanDrzewa.ZDROWE) zdrowe++;
                     else if (stan == Drzewo.StanDrzewa.PLONACE) plonace++;
                     else spalone++;
@@ -96,7 +112,7 @@ public class Las {
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
                 if (pola[i][j] instanceof Drzewo &&
-                        ((Drzewo)pola[i][j]).getStan() == Drzewo.StanDrzewa.PLONACE) {
+                        ((Drzewo) pola[i][j]).getStan() == Drzewo.StanDrzewa.PLONACE) {
                     return true;
                 }
             }
