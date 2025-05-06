@@ -50,7 +50,7 @@ public class Las {
                 } else if (losowa < 0.7) {
                     pola[i][j] = new Dab();
                 } else if (losowa < 0.85) {
-                    pola[i][j] = new Puste();
+                    pola[i][j] = new Trawa();
                 } else {
                     pola[i][j] = new Woda();
                 }
