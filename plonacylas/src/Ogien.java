@@ -27,7 +27,7 @@ class Ogien extends ElementTerenu {
         if (aktualnyCzasTrwania >= czasTrwania) {
             // Ogień gaśnie, pole wraca do poprzedniego stanu (trzeba zapamiętać poprzedni stan)
             // W tym uproszczeniu, po prostu staje się puste
-            las.setPole(row, col, new Trawa());
+            las.setPole(row, col, new Puste());
         } else {
             // Rozprzestrzenianie ognia (podobnie jak w Drzewo)
             rozprzestrzenOgien(las, row, col);
@@ -54,7 +54,7 @@ class Ogien extends ElementTerenu {
                         if (sasiad instanceof Drzewo) {
                             ((Drzewo) sasiad).setStan(Drzewo.StanDrzewa.PLONACE);
                             sasiad.symbol = '*';
-                        } else if (sasiad instanceof Trawa) {
+                        } else if (sasiad instanceof Puste) {
                             las.setPole(newRow, newCol, new Ogien(3)); // Nowy ogień na pustym polu
                         }
                     }

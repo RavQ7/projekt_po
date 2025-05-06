@@ -1,12 +1,12 @@
 public class Wiatr {
     private int kierunekDr;
     private int kierunekDc;
-    private int siła;
+    private int sila;
 
     public Wiatr() {
         this.kierunekDr = 0;
         this.kierunekDc = 0;
-        this.siła = 0;
+        this.sila = 0;
     }
 
     public void ustawKierunek(int dr, int dc) {
@@ -14,15 +14,15 @@ public class Wiatr {
         this.kierunekDc = dc;
     }
 
-    public void ustawSiłę(int siła) {
-        this.siła = Math.max(0, Math.min(siła, 5));
+    public void ustawSile(int sila) {
+        this.sila = Math.min(5, Math.max(0, sila));
     }
 
     public int[] getWektor() {
         return new int[]{kierunekDr, kierunekDc};
     }
 
-    public int getSiła() {
-        return siła;
+    public int getSila() {
+        return sila;
     }
 }

@@ -1,5 +1,5 @@
-class Sosna extends Drzewo {
+public class Sosna extends Drzewo {
     public Sosna() {
-        super('S', 5); // Sosna pali się przez 5 epok (przykładowa wartość)
+        super('S', 5, 0.4);
     }
 }
