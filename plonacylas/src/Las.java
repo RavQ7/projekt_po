@@ -30,6 +30,7 @@ public class Las {
     }
 
     private void inicjalizujLas() {
+
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
                 double los = rand.nextDouble();
@@ -43,6 +44,11 @@ public class Las {
         // Początkowy ogień
         int startRow = rand.nextInt(wysokosc);
         int startCol = rand.nextInt(szerokosc);
+        while (!(pola[startRow][startCol] instanceof Drzewo)) {
+            startRow = rand.nextInt(wysokosc);
+            startCol = rand.nextInt(szerokosc);
+        }
+
         if (pola[startRow][startCol] instanceof Drzewo) {
             ((Drzewo) pola[startRow][startCol]).setStan(Drzewo.StanDrzewa.PLONACE);
             pola[startRow][startCol].symbol = '*';
@@ -116,7 +122,7 @@ public class Las {
     public boolean czyPożarAktywny() {
         for (int i = 0; i < wysokosc; i++) {
             for (int j = 0; j < szerokosc; j++) {
-                if (pola[i][j] instanceof Drzewo &&
+                if (pola[i][j] instanceof Ogien || pola[i][j] instanceof Drzewo &&
                         ((Drzewo) pola[i][j]).getStan() == Drzewo.StanDrzewa.PLONACE) {
                     return true;
                 }
