@@ -17,7 +17,6 @@ public class Las {
     private int wysokosc;
     private int szerokosc;
     private final Wiatr wiatr = new Wiatr();
-    private FileWriter csvWriter;
     private Random rand = new Random();
     private int epoka;
 
@@ -33,8 +32,8 @@ public class Las {
         this.pola = new ElementTerenu[wysokosc][szerokosc];
         this.epoka = 0;
 
-        try {
-            csvWriter = new FileWriter("symulacja.csv");
+        // Inicjalizacja pliku CSV
+        try (FileWriter csvWriter = new FileWriter("symulacja.csv")) {
             csvWriter.append("Epoka,Zdrowe,Plonace,Spalone\n");
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Błąd tworzenia pliku CSV", e);
@@ -97,15 +96,18 @@ public class Las {
 
     /**
      * Zapisuje aktualny stan lasu do pliku CSV.
+     * Korzysta z try-with-resources dla automatycznego zamykania zasobów.
      *
      * @param epoka Numer bieżącej epoki
-     * @throws IOException jeśli wystąpi błąd podczas zapisu
      */
-    public void zapiszStanDoCSV(int epoka) throws IOException {
-        List<Integer> stany = zliczStany();
-        csvWriter.append(String.format("%d,%d,%d,%d\n",
-                epoka, stany.get(0), stany.get(1), stany.get(2)));
-        csvWriter.flush();
+    public void zapiszStanDoCSV(int epoka) {
+        try (FileWriter writer = new FileWriter("symulacja.csv", true)) {
+            List<Integer> stany = zliczStany();
+            writer.append(String.format("%d,%d,%d,%d\n",
+                    epoka, stany.get(0), stany.get(1), stany.get(2)));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Błąd zapisu do CSV", e);
+        }
     }
 
     /**
@@ -156,19 +158,6 @@ public class Las {
         int wszystkieDrzewa = stany.get(0) + stany.get(1) + stany.get(2);
         return wszystkieDrzewa > 0 ?
                 (stany.get(2) * 100.0) / wszystkieDrzewa : 0;
-    }
-
-    /**
-     * Kończy symulację i zamyka pliki.
-     */
-    public void zakonczSymulacje() {
-        try {
-            if (csvWriter != null) {
-                csvWriter.close();
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Błąd zamykania pliku CSV", e);
-        }
     }
 
     /**
