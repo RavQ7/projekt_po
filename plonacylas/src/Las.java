@@ -29,7 +29,7 @@ public class Las {
     public Las(int wysokosc, int szerokosc) {
         this.wysokosc = wysokosc;
         this.szerokosc = szerokosc;
-        this.pola = new ElementTerenu[wysokosc][szerokosc];
+        this.pola = new ElementTerenu[getWysokosc()][getSzerokosc()];
         this.epoka = 0;
 
         // Inicjalizacja pliku CSV
@@ -46,8 +46,8 @@ public class Las {
      * Inicjalizuje las losowymi elementami terenu i ustawia początkowy ogień.
      */
     private void inicjalizujLas() {
-        for (int i = 0; i < wysokosc; i++) {
-            for (int j = 0; j < szerokosc; j++) {
+        for (int i = 0; i < getWysokosc(); i++) {
+            for (int j = 0; j < getSzerokosc(); j++) {
                 double los = rand.nextDouble();
                 if (los < 0.35) pola[i][j] = new Sosna();
                 else if (los < 0.7) pola[i][j] = new Dab();
@@ -57,11 +57,11 @@ public class Las {
         }
 
         // Początkowy ogień
-        int startRow = rand.nextInt(wysokosc);
-        int startCol = rand.nextInt(szerokosc);
+        int startRow = rand.nextInt(getWysokosc());
+        int startCol = rand.nextInt(getSzerokosc());
         while (!(pola[startRow][startCol] instanceof Drzewo)) {
-            startRow = rand.nextInt(wysokosc);
-            startCol = rand.nextInt(szerokosc);
+            startRow = rand.nextInt(getWysokosc());
+            startCol = rand.nextInt(getSzerokosc());
         }
 
         if (pola[startRow][startCol] instanceof Drzewo) {
@@ -73,25 +73,31 @@ public class Las {
      * Wykonuje jeden krok symulacji.
      */
     public void symulujKrok() {
-        ElementTerenu[][] nowaPlansza = new ElementTerenu[wysokosc][szerokosc];
+        try {
+            ElementTerenu[][] nowaPlansza = new ElementTerenu[getWysokosc()][getSzerokosc()];
 
-        for (int i = 0; i < wysokosc; i++) {
-            for (int j = 0; j < szerokosc; j++) {
-                if (pola[i][j] != null) {
-                    ElementTerenu kopia = pola[i][j].stworzKopie();
-                    if (kopia != null) {
-                        kopia.nextStep(this, i, j);
-                        nowaPlansza[i][j] = kopia;
-                    } else {
-                        // Awaryjne tworzenie pustego pola jeśli kopię się nie udało
-                        LOGGER.warning("Nie udało się skopiować elementu na pozycji [" + i + "][" + j + "]");
-                        nowaPlansza[i][j] = new Puste();
+            for (int i = 0; i < getWysokosc(); i++) {
+                for (int j = 0; j < getSzerokosc(); j++) {
+                    if (pola[i][j] != null) {
+                        ElementTerenu kopia = pola[i][j].stworzKopie();
+                        if (kopia != null) {
+                            kopia.nextStep(this, i, j);
+                            nowaPlansza[i][j] = kopia;
+                        } else {
+                            // Awaryjne tworzenie pustego pola jeśli kopię się nie udało
+                            LOGGER.warning("Nie udało się skopiować elementu na pozycji [" + i + "][" + j + "]");
+                            nowaPlansza[i][j] = new Puste();
+                        }
                     }
                 }
             }
+            pola = nowaPlansza;
+            epoka++;
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Błąd podczas symulacji kroku: " + e.getMessage(), e);
+            // Opcjonalnie: można tutaj dodać działania naprawcze,
+            // aby zapewnić kontynuację działania programu
         }
-        pola = nowaPlansza;
-        epoka++;
     }
 
     /**
@@ -117,8 +123,8 @@ public class Las {
      */
     public List<Integer> zliczStany() {
         int zdrowe = 0, plonace = 0, spalone = 0;
-        for (int i = 0; i < wysokosc; i++) {
-            for (int j = 0; j < szerokosc; j++) {
+        for (int i = 0; i < getWysokosc(); i++) {
+            for (int j = 0; j < getSzerokosc(); j++) {
                 if (pola[i][j] instanceof Drzewo) {
                     Drzewo.StanDrzewa stan = ((Drzewo) pola[i][j]).getStan();
                     if (stan == Drzewo.StanDrzewa.ZDROWE) zdrowe++;
@@ -136,8 +142,8 @@ public class Las {
      * @return true jeśli w lesie są płonące drzewa lub ogień, false w przeciwnym przypadku
      */
     public boolean czyPozarAktywny() {
-        for (int i = 0; i < wysokosc; i++) {
-            for (int j = 0; j < szerokosc; j++) {
+        for (int i = 0; i < getWysokosc(); i++) {
+            for (int j = 0; j < getSzerokosc(); j++) {
                 if (pola[i][j] instanceof Ogien ||
                         (pola[i][j] instanceof Drzewo &&
                                 ((Drzewo) pola[i][j]).getStan() == Drzewo.StanDrzewa.PLONACE)) {
@@ -210,8 +216,8 @@ public class Las {
      * Wyświetla stan lasu w trybie tekstowym.
      */
     public void wyswietlLas() {
-        for (int i = 0; i < wysokosc; i++) {
-            for (int j = 0; j < szerokosc; j++) {
+        for (int i = 0; i < getWysokosc(); i++) {
+            for (int j = 0; j < getSzerokosc(); j++) {
                 System.out.print(pola[i][j].getSymbol() + " ");
             }
             System.out.println();
