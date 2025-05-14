@@ -75,7 +75,12 @@ public class Las {
     public void symulujKrok() {
         try {
             ElementTerenu[][] nowaPlansza = new ElementTerenu[getWysokosc()][getSzerokosc()];
-
+            Random rand = new Random();
+            int losowyKierunek = -1 + rand.nextInt() * (1 + 1);
+            int losowaSila = rand.nextInt(6);
+            // Konfiguracja wiatru do demonstracji jego wpływu
+            getWiatr().ustawKierunek(losowyKierunek, losowyKierunek); // Wiatr ze wschodu
+            getWiatr().ustawSile(losowaSila);
             for (int i = 0; i < getWysokosc(); i++) {
                 for (int j = 0; j < getSzerokosc(); j++) {
                     if (pola[i][j] != null) {
@@ -95,8 +100,6 @@ public class Las {
             epoka++;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Błąd podczas symulacji kroku: " + e.getMessage(), e);
-            // Opcjonalnie: można tutaj dodać działania naprawcze,
-            // aby zapewnić kontynuację działania programu
         }
     }
 

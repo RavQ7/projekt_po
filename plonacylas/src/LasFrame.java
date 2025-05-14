@@ -122,6 +122,7 @@ class ModifiedLasFrame extends JFrame {
         las.symulujKrok();            // Aktualizacja modelu
         lasPanel.updateLas(las);      // Aktualizacja widoku
         aktualizujStatystyki();       // Aktualizacja danych statystycznych
+        aktualizujWiatr();
 
         // Sprawdzenie warunku zakończenia symulacji
         if (!las.czyPozarAktywny()) {
@@ -144,6 +145,11 @@ class ModifiedLasFrame extends JFrame {
         } catch (Exception e) {
             System.err.println("Błąd zapisu: " + e.getMessage());
         }
+    }
+    private void aktualizujWiatr(){
+        int[] wiatrWektor = las.getWiatr().getWektor();
+        int wiatrSila = las.getWiatr().getSila();
+        wiatrLabel.setText(formatujInfoWiatru(wiatrWektor, wiatrSila));
     }
 
     /**
