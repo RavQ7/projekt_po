@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Klasa demonstracyjna dla tekstowego trybu symulacji pożaru lasu.
@@ -18,9 +19,13 @@ public class Symulacja {
         // Inicjalizacja lasu o rozmiarze 20x40
         Las las = new Las(20, 40);
 
-        // Konfiguracja wiatru - ustawienie kierunku ze wschodu i siły
-        las.getWiatr().ustawKierunek(0, 1); // Wiatr ze wschodu
-        las.getWiatr().ustawSile(3);
+        // Konfiguracja wiatru
+        Random rand = new Random();
+        int losowyKierunek = -1 + rand.nextInt() * (1 + 1);
+        int losowaSila = rand.nextInt(6);
+        // Konfiguracja wiatru do demonstracji jego wpływu
+        las.getWiatr().ustawKierunek(losowyKierunek, losowyKierunek); // Wiatr ze wschodu
+        las.getWiatr().ustawSile(losowaSila);
 
         int epoka = 0;
         // Główna pętla symulacji

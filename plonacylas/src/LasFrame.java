@@ -29,7 +29,6 @@ class ModifiedLasFrame extends JFrame {
         this.lasPanel = new LasPanel(las);
         this.legendPanel = new LegendPanel();
         this.statystykiLabel = new JLabel("Epoka: 0, Zdrowe: 0, Płonące: 0, Spalone: 0");
-
         // Inicjalizacja etykiety wiatru
         int[] wiatrWektor = las.getWiatr().getWektor();
         int wiatrSila = las.getWiatr().getSila();

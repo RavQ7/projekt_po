@@ -33,12 +33,9 @@ public class LegendPanel extends JPanel {
         legendItems.put("Dąb", new Color(0, 100, 0));
         legendItems.put("Trawa", new Color(240, 230, 140));
         legendItems.put("Woda", Color.BLUE);
-        legendItems.put("Płonące", Color.RED);
+        legendItems.put("Płonące", new Color(247, 121, 37));
         legendItems.put("Spalone", Color.DARK_GRAY);
         legendItems.put("Puste", Color.WHITE);
-
-        // Dodatkowe informacje o elementach dynamicznych
-        legendItems.put("Ogień", new Color(247, 121, 37));
     }
 
     /**

@@ -35,8 +35,8 @@ class LasPanel extends JPanel {
         kolorMap.put('D', new Color(0, 100, 0)); // Dąb (ciemnozielony)
         kolorMap.put('.', new Color(240, 230, 140)); // Trawa (Khaki)
         kolorMap.put('~', Color.BLUE);    // Woda
-        kolorMap.put('*', Color.RED);     // Ogień
-        kolorMap.put('!', new Color(247, 121, 37));   // Płonące (pomarańczowy)
+        kolorMap.put('!', Color.RED);     // Ogień
+        kolorMap.put('*', new Color(247, 121, 37));   // Płonące (pomarańczowy)
         kolorMap.put('#', Color.DARK_GRAY); // Spalone
         kolorMap.put(' ', Color.WHITE);   // Puste
     }
