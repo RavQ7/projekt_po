@@ -140,6 +140,11 @@ class ModifiedLasFrame extends JFrame {
         List<Integer> statystyki = las.zliczStany();
         statystykiLabel.setText(String.format("Epoka: %d, Zdrowe: %d, Płonące: %d, Spalone: %d",
                 las.getEpoka(), statystyki.get(0), statystyki.get(1), statystyki.get(2)));
+        try {
+            las.zapiszStanDoCSV(las.getEpoka());
+        } catch (Exception e) {
+            System.err.println("Błąd zapisu: " + e.getMessage());
+        }
     }
 
     /**
