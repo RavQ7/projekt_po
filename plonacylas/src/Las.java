@@ -95,8 +95,6 @@ public class Las {
             epoka++;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Błąd podczas symulacji kroku: " + e.getMessage(), e);
-            // Opcjonalnie: można tutaj dodać działania naprawcze,
-            // aby zapewnić kontynuację działania programu
         }
     }
 
